@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "metrics": {
+    "production_loc": 2319,
+    "production_files": 34,
+    "production_packages": 9,
+    "test_files": 10,
+    "production_functions": 176,
+    "decision_points": 316
+  },
+  "persistence": {
+    "module": "go.etcd.io/bbolt",
+    "entities": [
+      "Record",
+      "AuditEvent",
+      "Workflow",
+      "Attachment"
+    ],
+    "reopen_test": "TestPersistenceSurvivesReopen"
+  },
+  "workflows": [
+    {
+      "steps": [
+        "Editor registers a validated experiment entry.",
+        "Editor submits the entry for policy and teacher review.",
+        "Reviewer approves the entry and the service publishes it.",
+        "Archive operator closes the approved entry in the edition."
+      ],
+      "test": "TestWorkflowCreateReviewArchive"
+    },
+    {
+      "steps": [
+        "Reader or editor searches by edition or text.",
+        "Editor selects a matching entry.",
+        "Editor updates a draft or rejected entry.",
+        "API or query service returns the visible published entry."
+      ],
+      "test": "TestWorkflowSearchUpdatePublish"
+    },
+    {
+      "steps": [
+        "Importer parses tab-separated rows.",
+        "Importer validates required fields and experiment steps.",
+        "Registry and bbolt persist accepted records.",
+        "Reporter counts archived and visible entries for the edition."
+      ],
+      "test": "TestWorkflowImportReport"
+    }
+  ]
+}
